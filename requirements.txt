@@ -1,0 +1,5 @@
+invoke==0.12.2
+
+-e ../dkfileutils
+-e ../dk-tasklib
+-e ../yamldirs
