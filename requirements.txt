@@ -1,6 +1,10 @@
 invoke==0.12.2
 PyYAML==3.11
 
--e ../dkfileutils
--e ../dk-tasklib
--e ../yamldirs
+# -e ../dkfileutils
+# -e ../dk-tasklib
+# -e ../yamldirs
+
+dkfileutils
+dk-tasklib
+yamldirs
