@@ -1,4 +1,5 @@
 invoke==0.12.2
+PyYAML==3.11
 
 -e ../dkfileutils
 -e ../dk-tasklib
