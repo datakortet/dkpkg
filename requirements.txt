@@ -8,3 +8,5 @@ PyYAML==3.11
 dkfileutils
 dk-tasklib
 yamldirs
+
+pytest-cov
