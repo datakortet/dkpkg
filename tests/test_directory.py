@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from dkfileutils.path import Path
-from dkpkg.directory import PackageDirectories
+from dkpkg.directory import Package
 from yamldirs import create_files
 
 
@@ -11,7 +11,7 @@ def test_package_dir():
     with create_files(files) as r:
         r = Path(r)
         print 'root', r
-        p = PackageDirectories('mypkg')
+        p = Package('mypkg')
         assert p.location == r
         assert p.wc == r / 'mypkg'
         assert p.docs == r / 'mypkg/docs'
@@ -27,9 +27,9 @@ def test_package_dir():
         assert p.build_lintscore == r / 'mypkg/build/lintscore'
         assert p.build_meta == r / 'mypkg/build/meta'
         assert p.build_pytest == r / 'mypkg/build/pytest'
-        assert p.test == r / 'mypkg/test'
+        assert p.tests == r / 'mypkg/tests'
 
-        p.makedirs()
+        p.make_missing()
 
         assert p.docs.exists()
         assert p.source.exists()
@@ -42,4 +42,4 @@ def test_package_dir():
         assert p.build_pytest.exists()
         assert p.django_templates.exists()
         assert p.django_static.exists()
-        assert p.test.exists()
+        assert p.tests.exists()
