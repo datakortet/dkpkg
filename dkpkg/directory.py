@@ -3,6 +3,8 @@
 Programatic interface to package structure.
 """
 import ConfigParser
+from cStringIO import StringIO
+
 from dkfileutils.path import Path
 
 
@@ -30,9 +32,10 @@ class DefaultPackage(object):
               +-- requirements.txt  #
 
     """
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, wc):
         self.wc = Path(wc).abspath()
-        self.location = self.wc.parent
+        self.location = self.wc.parent      # pylint: disable=no-member
         self.name = self.wc.basename().replace('-', '')
         self.docs = self.wc / 'docs'
         self.tests = self.wc / 'tests'
@@ -91,16 +94,35 @@ class DefaultPackage(object):
 
     def __repr__(self):
         keylen = max(len(k) for k in self.__dict__.keys())
-        vallen = max(len(k) for k in self.__dict__.values())
+        # vallen = max(len(k) for k in self.__dict__.values())
         lines = []
         for k, v in sorted(self.__dict__.items()):
-            lines.append("%*s %-*s" % (keylen, k, vallen, v))
+            lines.append("%*s %-s" % (keylen, k, v))
         return '\n'.join(lines)
+
+    def write_ini(self, fname, section):
+        """Write to ini file.
+        """
+        cp = ConfigParser.RawConfigParser()
+        cp.add_section(section)
+        vals = [
+            'wc', 'location', 'name', 'docs', 'tests', 'source', 'source_js',
+            'source_less', 'build', 'build_coverage', 'build_docs',
+            'build_lintscore', 'build_meta', 'build_pytest',
+            'django_templates', 'django_static',
+        ]
+        for val in vals:
+            cp.set(section, val, getattr(self, val))
+        print fname
+        out = StringIO()
+        cp.write(out)
+        return out.getvalue()
 
 
 class Package(DefaultPackage):
     """Package layout with possible overrides.
     """
+    # pylint: disable=too-many-instance-attributes,too-many-locals,R0903
     def __init__(self, wc,
                  name=None,
                  docs=None,
@@ -116,6 +138,7 @@ class Package(DefaultPackage):
                  build_pytest=None,
                  django_templates=None,
                  django_static=None):
+        # pylint: disable=multiple-statements,too-many-arguments,R0912
         super(Package, self).__init__(wc)
         if name: self.name = name
         if docs: self.docs = docs
@@ -143,30 +166,16 @@ class Package(DefaultPackage):
         if django_templates: self.django_templates = django_templates
         if django_static: self.django_static = django_static
 
-    def write_ini(self, fname, section):
-        cp = ConfigParser.RawConfigParser()
-        cp.add_section(section)
-        vals = [
-            'wc', 'location', 'name', 'docs', 'test', 'source', 'source_js',
-            'source_less', 'build', 'build_coverage', 'build_docs',
-            'build_lintscore', 'build_meta', 'build_pytest',
-            'django_templates', 'django_static',
-        ]
-        for val in vals:
-            cp.set(section, val, getattr(self, val))
-        return cp
 
-
-p = Package('w:/srv/lib/dkcal')
-print p
-
-
+# p = Package('w:/srv/lib/dkcal')
+# print p
 
 # cp = p.write_ini('', 'dkbuild')
 # for sect in cp.sections():
 #     print '[%s]' % sect
 #     for name, value in cp.items(sect):
-#         print '%s = %s' % (name, value), 'FOUND' if getattr(p, name).exists() else 'MISSING'
+#         print '%s = %s' % (name, value), 'FOUND' if getattr(p, name).exists()
+#  else 'MISSING'
 #
 # print p.write_ini('', 'dkbuild')
 #
