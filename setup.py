@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""dkpkg - short description
+"""dkpkg - standardized package structure names
 """
 
 classifiers = """\
@@ -18,7 +18,7 @@ import setuptools
 from distutils.core import setup, Command
 from setuptools.command.test import test as TestCommand
 
-version = '0.1.0'
+version = '0.1.4'
 
 
 class PyTest(TestCommand):

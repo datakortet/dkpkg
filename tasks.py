@@ -15,6 +15,8 @@ from dktasklib.manage import collectstatic
 from dktasklib import lessc
 from dktasklib import docs as doctools
 from dktasklib import jstools
+from dktasklib.package import package
+from dktasklib.publish import publish
 from dktasklib import version, upversion
 from dktasklib.watch import Watcher
 
@@ -108,6 +110,8 @@ ns = collection.Collection(
     build_js,
     lessc,
     doctools,
+    package,
+    publish,
     version, upversion,
     collectstatic,
 )

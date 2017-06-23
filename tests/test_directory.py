@@ -6,6 +6,10 @@ from dkpkg.directory import Package
 from yamldirs import create_files
 
 
+def cmptxt(t):
+    return textwrap.dedent(t).strip().replace('\\', '/')
+
+
 def test_package_repr():
     files = """
         mypkg: []
@@ -14,7 +18,7 @@ def test_package_repr():
         r = Path(r)
         print 'root', r
         p = Package('mypkg')
-        assert repr(p).strip() == textwrap.dedent(r"""
+        assert cmptxt(repr(p)) == cmptxt(r"""
                        build {root}\mypkg\build
               build_coverage {root}\mypkg\build\coverage
                   build_docs {root}\mypkg\build\docs
@@ -31,7 +35,7 @@ def test_package_repr():
                  source_less {root}\mypkg\mypkg\less
                        tests {root}\mypkg\tests
                           wc {root}\mypkg
-        """.format(root=r)).strip()
+        """.format(root=r))
 
 
 def test_write_ini():
@@ -42,7 +46,7 @@ def test_write_ini():
         r = Path(r)
         print 'root', r
         p = Package('mypkg')
-        assert p.write_ini('foo', 'dkbuild').strip() == textwrap.dedent(r"""
+        assert cmptxt(p.write_ini('foo', 'dkbuild')) == cmptxt(r"""
             [dkbuild]
             wc = {root}\mypkg
             location = {root}
@@ -60,7 +64,7 @@ def test_write_ini():
             build_pytest = {root}\mypkg\build\pytest
             django_templates = {root}\mypkg\mypkg\templates
             django_static = {root}\mypkg\mypkg\static        
-        """.format(root=r)).strip()
+        """.format(root=r))
 
 
 def test_package_override():

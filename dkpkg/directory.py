@@ -10,26 +10,26 @@ from dkfileutils.path import Path
 
 class DefaultPackage(object):
     """Default package directory layout (consider this abstract)
+      ::
 
-       ::
-       <parent>
-         |
-         |--<name>                  # self.wc
-              |-- build             # self.build
-              |   |-- coverage      # self.build_coverage
-              |   |-- docs          # self.build_docs
-              |   |-- lintscore     # self.build_lintscore
-              |   |-- meta          # self.build_meta
-              |   `-- pytest        # self.build_pytest
-              |-- <name>            # importable name (self.name, self.source)
-              |   |-- js            # self.source_js
-              |   |-- less          # self.source_less
-              |   |-- static        # self.django_static
-              |   `-- templates     # self.django_templates
-              |-- docs              # self.docs
-              `-- tests             # self.tests
-              +-- setup.py          #
-              +-- requirements.txt  #
+          <parent>
+             |
+             |--<name>                  # self.wc
+                  |-- build             # self.build
+                  |   |-- coverage      # self.build_coverage
+                  |   |-- docs          # self.build_docs
+                  |   |-- lintscore     # self.build_lintscore
+                  |   |-- meta          # self.build_meta
+                  |   `-- pytest        # self.build_pytest
+                  |-- <name>            # self.name, self.source
+                  |   |-- js            # self.source_js
+                  |   |-- less          # self.source_less
+                  |   |-- static        # self.django_static
+                  |   `-- templates     # self.django_templates
+                  |-- docs              # self.docs
+                  `-- tests             # self.tests
+                  +-- setup.py          #
+                  +-- requirements.txt  #
 
     """
     # pylint: disable=too-many-instance-attributes
@@ -165,64 +165,3 @@ class Package(DefaultPackage):
         if build_pytest: self.build_pytest = build_pytest
         if django_templates: self.django_templates = django_templates
         if django_static: self.django_static = django_static
-
-
-# p = Package('w:/srv/lib/dkcal')
-# print p
-
-# cp = p.write_ini('', 'dkbuild')
-# for sect in cp.sections():
-#     print '[%s]' % sect
-#     for name, value in cp.items(sect):
-#         print '%s = %s' % (name, value), 'FOUND' if getattr(p, name).exists()
-#  else 'MISSING'
-#
-# print p.write_ini('', 'dkbuild')
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-# """
-# wc = w:\srv\lib\dkcal FOUND
-#     location = w:\srv\lib FOUND
-#     name = dkcal MISSING
-#     docs = w:\srv\lib\dkcal\docs FOUND
-#     test = w:\srv\lib\dkcal\test MISSING
-#     source = w:\srv\lib\dkcal\dkcal FOUND
-#     source_js = w:\srv\lib\dkcal\dkcal\js FOUND
-#     source_less = w:\srv\lib\dkcal\dkcal\less FOUND
-#     build = w:\srv\lib\dkcal\build FOUND
-#     build_coverage = w:\srv\lib\dkcal\build\coverage FOUND
-#     build_docs = w:\srv\lib\dkcal\build\docs MISSING
-#     build_lintscore = w:\srv\lib\dkcal\build\lintscore FOUND
-#     build_meta = w:\srv\lib\dkcal\build\meta FOUND
-#     build_pytest = w:\srv\lib\dkcal\build\pytest FOUND
-#     django_templates = w:\srv\lib\dkcal\dkcal\templates FOUND
-#     django_static = w:\srv\lib\dkcal\dkcal\static FOUND
-#
-# """
