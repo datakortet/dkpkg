@@ -10,6 +10,11 @@ def cmptxt(t):
     return textwrap.dedent(t).strip().replace('\\', '/')
 
 
+def test_extra_args():
+    p = Package('foo', version=42)
+    assert p.version == 42
+
+
 def test_package_repr():
     files = """
         mypkg: []
@@ -18,6 +23,7 @@ def test_package_repr():
         r = Path(r)
         print 'root', r
         p = Package('mypkg')
+        print 'repr:\n', repr(p)
         assert cmptxt(repr(p)) == cmptxt(r"""
                        build {root}\mypkg\build
               build_coverage {root}\mypkg\build\coverage
@@ -30,11 +36,12 @@ def test_package_repr():
                         docs {root}\mypkg\docs
                     location {root}
                         name mypkg
+                package_name mypkg
+                        root {root}\mypkg
                       source {root}\mypkg\mypkg
                    source_js {root}\mypkg\mypkg\js
                  source_less {root}\mypkg\mypkg\less
                        tests {root}\mypkg\tests
-                          wc {root}\mypkg
         """.format(root=r))
 
 
@@ -48,7 +55,7 @@ def test_write_ini():
         p = Package('mypkg')
         assert cmptxt(p.write_ini('foo', 'dkbuild')) == cmptxt(r"""
             [dkbuild]
-            wc = {root}\mypkg
+            root = {root}\mypkg
             location = {root}
             name = mypkg
             docs = {root}\mypkg\docs
@@ -76,7 +83,7 @@ def test_package_override():
         print 'root', r
         p = Package('mypkg', build=r/'build', source=r/'mypkg/src')
         assert p.location == r
-        assert p.wc == r / 'mypkg'
+        assert p.root == r / 'mypkg'
         assert p.docs == r / 'mypkg/docs'
         assert p.name == 'mypkg'
         assert p.source == r / 'mypkg/src'
@@ -117,7 +124,7 @@ def test_package_default():
         print 'root', r
         p = Package('mypkg')
         assert p.location == r
-        assert p.wc == r / 'mypkg'
+        assert p.root == r / 'mypkg'
         assert p.docs == r / 'mypkg/docs'
         assert p.name == 'mypkg'
         assert p.source == r / 'mypkg/mypkg'
