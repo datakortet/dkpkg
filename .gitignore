@@ -1,3 +1,10 @@
+.md5
+.idea/dictionaries/*
+.idea/vagrant.xml
+.idea/workspace.xml
+*~
+docs/.md5
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
