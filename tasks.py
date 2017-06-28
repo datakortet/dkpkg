@@ -48,8 +48,8 @@ def build_js(ctx, force=False):
     for fname in JSX_FILENAMES:
         jstools.babel(
             ctx,
-            '{pkg.sourcedir}/js/' + fname,
-            '{pkg.staticdir}/{pkg.name}/js/' + fname + '.js',
+            '{pkg.source_js}/' + fname,
+            '{pkg.django_static}/{pkg.name}/js/' + fname + '.js',
             force=force
         )
 
@@ -62,12 +62,12 @@ def build(ctx, less=False, docs=False, js=False, force=False):
     buildall = not specified
 
     if buildall or less:
-        less_fname = ctx.pkg.sourcedir / 'less' / ctx.pkg.name + '.less'
+        less_fname = ctx.pkg.source_less / ctx.pkg.name + '.less'
         if less_fname.exists():
             lessc.LessRule(
                 ctx,
-                src='{pkg.sourcedir}/less/{pkg.name}.less',
-                dst='{pkg.staticdir}/{pkg.name}/css/{pkg.name}-{version}.min.css',
+                src='{pkg.source_less}/{pkg.name}.less',
+                dst='{pkg.django_static}/{pkg.name}/css/{pkg.name}-{version}.min.css',
                 force=force
             )
         elif less:
@@ -79,7 +79,7 @@ def build(ctx, less=False, docs=False, js=False, force=False):
     if buildall or js:
         build_js(ctx, force)
 
-    if DJANGO_SETTINGS_MODULE and (force or changed(ctx.pkg.staticdir)):
+    if DJANGO_SETTINGS_MODULE and (force or changed(ctx.pkg.django_static)):
         collectstatic(ctx, DJANGO_SETTINGS_MODULE)
 
 
@@ -89,15 +89,15 @@ def watch(ctx):
     """
     watcher = Watcher(ctx)
     watcher.watch_directory(
-        path='{pkg.sourcedir}/less', ext='.less',
+        path='{pkg.source_less}', ext='.less',
         action=lambda e: build(ctx, less=True)
     )
     watcher.watch_directory(
-        path='{pkg.sourcedir}/js', ext='.jsx',
+        path='{pkg.source_js}', ext='.jsx',
         action=lambda e: build(ctx, js=True)
     )
     watcher.watch_directory(
-        path='{pkg.docsdir}', ext='.rst',
+        path='{pkg.docs}', ext='.rst',
         action=lambda e: build(ctx, docs=True)
     )
     watcher.start()
