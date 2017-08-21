@@ -5,8 +5,8 @@ PyYAML==3.11
 # -e ../dk-tasklib
 # -e ../yamldirs
 
-dkfileutils
-dk-tasklib
-yamldirs
+dkfileutils>=1.3.2
+dk-tasklib>=0.2.9
+yamldirs>=1.0.9
 
 pytest-cov
