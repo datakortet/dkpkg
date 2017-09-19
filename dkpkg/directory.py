@@ -2,6 +2,8 @@
 """
 Programatic interface to package structure.
 """
+# pylint: disable=too-many-instance-attributes,too-many-locals,R0903
+
 import ConfigParser
 from cStringIO import StringIO
 
@@ -51,7 +53,6 @@ class DefaultPackage(object):
         'build_pytest',
     }
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, root, **kw):
         #: The abspath to the "working copy".
         self.root = Path(root).abspath()
@@ -162,7 +163,7 @@ class DefaultPackage(object):
 class Package(DefaultPackage):
     """Package layout with possible overrides.
     """
-    # pylint: disable=too-many-instance-attributes,too-many-locals,R0903
+    
     def __init__(self, root,
                  name=None,
                  docs=None,
