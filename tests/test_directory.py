@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import textwrap
 
 from dkfileutils.path import Path
@@ -21,9 +22,9 @@ def test_package_repr():
     """
     with create_files(files) as r:
         r = Path(r)
-        print 'root', r
+        print('root', r)
         p = Package('mypkg')
-        print 'repr:\n', repr(p)
+        print('repr:\n', repr(p))
         assert cmptxt(repr(p)) == cmptxt(r"""
                        build {root}\mypkg\build
               build_coverage {root}\mypkg\build\coverage
@@ -51,7 +52,7 @@ def test_write_ini():
     """
     with create_files(files) as r:
         r = Path(r)
-        print 'root', r
+        print('root', r)
         p = Package('mypkg')
         assert cmptxt(p.write_ini('foo', 'dkbuild')) == cmptxt(r"""
             [dkbuild]
@@ -80,7 +81,7 @@ def test_package_override():
     """
     with create_files(files) as r:
         r = Path(r)
-        print 'root', r
+        print('root', r)
         p = Package('mypkg', build=r/'build', source=r/'mypkg/src')
         assert p.location == r
         assert p.root == r / 'mypkg'
@@ -121,7 +122,7 @@ def test_package_default():
     """
     with create_files(files) as r:
         r = Path(r)
-        print 'root', r
+        print('root', r)
         p = Package('mypkg')
         assert p.location == r
         assert p.root == r / 'mypkg'

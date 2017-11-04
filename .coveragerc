@@ -2,6 +2,7 @@
 ;; measure branch coverage
 branch = True
 ;; parallell = True
+source=dkpkg
 
 
 [report]
