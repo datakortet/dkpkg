@@ -3,9 +3,13 @@
 Programatic interface to package structure.
 """
 # pylint: disable=too-many-instance-attributes,too-many-locals,R0903
-
-import ConfigParser
-from cStringIO import StringIO
+from __future__ import print_function
+try:
+    import ConfigParser as configparser
+    from cStringIO import StringIO
+except ImportError:
+    import configparser
+    from io import StringIO
 
 from dkfileutils.path import Path
 
@@ -154,7 +158,7 @@ class DefaultPackage(object):
         ]
         for val in vals:
             cp.set(section, val, getattr(self, val))
-        print fname
+
         out = StringIO()
         cp.write(out)
         return out.getvalue()
