@@ -13,9 +13,8 @@ This file defines tasks for the Invoke tool: http://www.pyinvoke.org
 Basic usage::
 
     inv -l               # list all available tasks
-    inv -e ...           # echo commands as tasks are executed
-    inv -e build -f      # build everything, forcefully
-    inv -e build --docs  # only build the docs
+    inv build -f         # build everything, forcefully
+    inv build --docs     # only build the docs
 
 dk-tasklib is a library of basic tasks that tries to automate common tasks.
 dk-tasklib will attempt to install any tools/libraries/etc. that are required,
@@ -43,7 +42,7 @@ from dktasklib import version, upversion
 from dktasklib.manage import collectstatic
 from dktasklib import Package, package
 from dktasklib.watch import Watcher
-# from dktasklib.publish import publish
+from dktasklib.publish import publish
 
 #: where tasks.py is located (root of package)
 DIRNAME = Path(os.path.dirname(__file__))
@@ -155,7 +154,7 @@ ns = Collection(
     version, upversion,
     package,
     collectstatic,
-    # publish,
+    publish,
 )
 ns.configure({
     'run': {
