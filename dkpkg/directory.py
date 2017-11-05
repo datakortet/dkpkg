@@ -7,7 +7,7 @@ from __future__ import print_function
 try:
     import ConfigParser as configparser
     from cStringIO import StringIO
-except ImportError:
+except ImportError:  # pragma: nocover
     import configparser
     from io import StringIO
 
@@ -148,7 +148,7 @@ class DefaultPackage(object):
     def write_ini(self, fname, section):
         """Write to ini file.
         """
-        cp = ConfigParser.RawConfigParser()
+        cp = configparser.RawConfigParser()
         cp.add_section(section)
         vals = [
             'root', 'location', 'name', 'docs', 'tests', 'source', 'source_js',
