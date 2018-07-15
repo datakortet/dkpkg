@@ -43,6 +43,7 @@ def test_package_repr():
                    source_js {root}\mypkg\mypkg\js
                  source_less {root}\mypkg\mypkg\less
                        tests {root}\mypkg\tests
+                    tests_js {root}\mypkg\tests\js
         """.format(root=r))
 
 
@@ -114,6 +115,7 @@ def test_package_override():
         assert p.django_templates.exists()
         assert p.django_static.exists()
         assert p.tests.exists()
+        assert p.is_django()
 
 
 def test_package_default():

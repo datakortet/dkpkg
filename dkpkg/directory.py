@@ -103,7 +103,7 @@ class DefaultPackage(object):
         self.build_pytest = self.root / 'build' / 'pytest'
 
         for k, v in kw.items():
-            setattr(self, k, self.root / v)
+            setattr(self, k, v)
 
     def is_django(self):
         return any(d.exists() for d in self.django_dirs)
