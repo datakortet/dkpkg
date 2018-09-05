@@ -15,7 +15,11 @@ from dkfileutils.path import Path
 
 
 class DefaultPackage(object):
-    """Default package directory layout (consider this abstract)
+    """Default package directory layout (consider this abstract, both in the
+       sense that this class is abstract and in the sense that this is the
+       attribute names of this object, not neccessarily the actual directory
+       name)
+
       ::
 
           <parent>                      # self.location (abspath)
@@ -44,6 +48,7 @@ class DefaultPackage(object):
         'name',
         'docs',
         'tests',
+        'tests_js',
         'build',
         'source',
         'source_js',
@@ -70,6 +75,8 @@ class DefaultPackage(object):
         self.docs = self.root / 'docs'
         #: The tests directory.
         self.tests = self.root / 'tests'
+        #: the javascript tests directory
+        self.tests_js = self.root / 'tests' / 'js'
         #: The root of the build output directory.
         self.build = self.root / 'build'
         #: The source directory.
@@ -97,6 +104,9 @@ class DefaultPackage(object):
 
         for k, v in kw.items():
             setattr(self, k, v)
+
+    def is_django(self):
+        return any(d.exists() for d in self.django_dirs)
 
     @property
     def source_dirs(self):
