@@ -1,6 +1,6 @@
 .md5
 dkpkg.svg
-
+.idea/*
 .idea/dictionaries/*
 .idea/vagrant.xml
 .idea/workspace.xml
