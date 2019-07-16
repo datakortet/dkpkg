@@ -118,6 +118,49 @@ def test_package_override():
         assert p.is_django()
 
 
+def test_package_override_name():
+    files = """
+        my-pkg: []
+    """
+    with create_files(files) as r:
+        r = Path(r)
+        print('root', r)
+        p = Package('my-pkg', name='foo')
+        assert p.location == r
+        assert p.root == r / 'my-pkg'
+        assert p.docs == r / 'my-pkg/docs'
+        assert p.name == 'foo'
+        assert p.source == r / 'my-pkg/foo'
+        assert p.source_js == r / 'my-pkg/foo/js'
+        assert p.source_less == r / 'my-pkg/foo/less'
+        assert p.django_templates == r / 'my-pkg/foo/templates'
+        assert p.django_static == r / 'my-pkg/foo/static'
+        assert p.build == r / 'my-pkg/build'
+        assert p.build_coverage == r / 'my-pkg/build/coverage'
+        assert p.build_docs == r / 'my-pkg/build/docs'
+        assert p.build_lintscore == r / 'my-pkg/build/lintscore'
+        assert p.build_meta == r / 'my-pkg/build/meta'
+        assert p.build_pytest == r / 'my-pkg/build/pytest'
+        assert p.tests == r / 'my-pkg/tests'
+
+        p.make_missing()
+
+        assert p.docs.exists()
+        assert p.source.exists()
+        assert p.source_js.exists()
+        assert p.source_less.exists()
+        assert p.build.exists()
+        assert p.build_coverage.exists()
+        assert p.build_lintscore.exists()
+        assert p.build_coverage.exists()
+        assert p.build_pytest.exists()
+        assert p.django_templates.exists()
+        assert p.django_static.exists()
+        assert p.tests.exists()
+        assert p.is_django()
+
+
+
 def test_package_default():
     files = """
         mypkg: []
