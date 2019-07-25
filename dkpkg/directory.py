@@ -64,43 +64,43 @@ class DefaultPackage(object):
 
     def __init__(self, root, **kw):
         #: The abspath to the "working copy".
-        self.root = kw.get('root', Path(root).abspath())
+        self.root = kw.get('root') or Path(root).abspath()
         #: The abspath of the directory containing the root.
-        self.location = kw.get('location', self.root.parent)     # pylint: disable=no-member
+        self.location = kw.get('location') or self.root.parent     # pylint: disable=no-member
         #: The pip-installable name.
-        self.package_name = kw.get('package_name', self.root.basename())
+        self.package_name = kw.get('package_name') or self.root.basename()
         #: The importable name.
-        self.name = kw.get('name', self.package_name.replace('-', ''))
+        self.name = kw.get('name') or self.package_name.replace('-', '')
         #: The documentation source directory.
-        self.docs = kw.get('docs', self.root / 'docs')
+        self.docs = kw.get('docs') or self.root / 'docs'
         #: The tests directory.
-        self.tests = kw.get('tests', self.root / 'tests')
+        self.tests = kw.get('tests') or self.root / 'tests'
         #: the javascript tests directory
-        self.tests_js = kw.get('tests_js', self.root / 'tests' / 'js')
+        self.tests_js = kw.get('tests_js') or self.root / 'tests' / 'js'
         #: The root of the build output directory.
-        self.build = kw.get('build', self.root / 'build')
+        self.build = kw.get('build') or self.root / 'build'
         #: The source directory.
-        self.source = kw.get('source', self.root / self.name)
+        self.source = kw.get('source') or self.root / self.name
 
         #: The javascript source directory.
-        self.source_js = kw.get('source_js', self.root / self.name / 'js')
+        self.source_js = kw.get('source_js') or self.root / self.name / 'js'
         #: The less source directory.
-        self.source_less = kw.get('source_less', self.root / self.name / 'less')
+        self.source_less = kw.get('source_less') or self.root / self.name / 'less'
         #: The django app template directory.
-        self.django_templates = kw.get('django_templates', self.root / self.name / 'templates')
+        self.django_templates = kw.get('django_templates') or self.root / self.name / 'templates'
         #: The django app static directory.
-        self.django_static = kw.get('django_static', self.root / self.name / 'static')
+        self.django_static = kw.get('django_static') or self.root / self.name / 'static'
 
         #: Coverage output directory.
-        self.build_coverage = kw.get('build_coverage', self.root / 'build' / 'coverage')
+        self.build_coverage = kw.get('build_coverage') or self.root / 'build' / 'coverage'
         #: Documentation output directory.
-        self.build_docs = kw.get('build_docs', self.root / 'build' / 'docs')
+        self.build_docs = kw.get('build_docs') or self.root / 'build' / 'docs'
         #: Lintscore output directory.
-        self.build_lintscore = kw.get('build_lintscore', self.root / 'build' / 'lintscore')
+        self.build_lintscore = kw.get('build_lintscore') or self.root / 'build' / 'lintscore'
         #: Package meta output directory.
-        self.build_meta = kw.get('build_meta', self.root / 'build' / 'meta')
+        self.build_meta = kw.get('build_meta') or self.root / 'build' / 'meta'
         #: Pytest output directory.
-        self.build_pytest = kw.get('build_pytest', self.root / 'build' / 'pytest')
+        self.build_pytest = kw.get('build_pytest') or self.root / 'build' / 'pytest'
 
         for k, v in kw.items():
             setattr(self, k, v)
