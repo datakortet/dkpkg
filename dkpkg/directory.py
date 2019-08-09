@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Programatic interface to package structure.
+
+Use the :class:`Package` class.
 """
 # pylint: disable=too-many-instance-attributes,too-many-locals,R0903
 from __future__ import print_function
@@ -24,19 +26,19 @@ class DefaultPackage(object):
 
           <parent>                      # self.location (abspath)
              |--<name>                  # self.root (abspath), self.package_name
+                  |-- <name>            # <name> == self.name, self.source
+                  |   |-- static        # self.django_static
+                  |   `-- templates     # self.django_templates
+                  |-- js                # self.source_js
+                  |-- less              # self.source_less
+                  |-- docs              # self.docs
+                  +-- tests             # self.tests
                   |-- build             # self.build
                   |   |-- coverage      # self.build_coverage
                   |   |-- docs          # self.build_docs
                   |   |-- lintscore     # self.build_lintscore
                   |   |-- meta          # self.build_meta
                   |   `-- pytest        # self.build_pytest
-                  |-- <name>            # <name> == self.name, self.source
-                  |   |-- js            # self.source_js
-                  |   |-- less          # self.source_less
-                  |   |-- static        # self.django_static
-                  |   `-- templates     # self.django_templates
-                  |-- docs              # self.docs
-                  +-- tests             # self.tests
                   +-- setup.py          #
                   `-- requirements.txt  #
 
@@ -55,6 +57,7 @@ class DefaultPackage(object):
         'source_less',
         'django_templates',
         'django_static',
+        'django_models',
         'build_coverage',
         'build_docs',
         'build_lintscore',
@@ -83,13 +86,19 @@ class DefaultPackage(object):
         self.source = kw.get('source') or self.root / self.name
 
         #: The javascript source directory.
-        self.source_js = kw.get('source_js') or self.root / self.name / 'js'
+        self.source_js = kw.get('source_js') or self.root / 'js'
         #: The less source directory.
-        self.source_less = kw.get('source_less') or self.root / self.name / 'less'
+        self.source_less = kw.get('source_less') or self.root / 'less'
+
         #: The django app template directory.
         self.django_templates = kw.get('django_templates') or self.root / self.name / 'templates'
         #: The django app static directory.
         self.django_static = kw.get('django_static') or self.root / self.name / 'static'
+
+        #: The django models directory
+        self.django_models_dir = kw.get('django_models') or self.root / self.name / 'models'
+        #: the django models.py file
+        self.django_models_py = kw.get('django_models') or self.root / self.name / 'models.py'
 
         #: Coverage output directory.
         self.build_coverage = kw.get('build_coverage') or self.root / 'build' / 'coverage'
@@ -115,10 +124,18 @@ class DefaultPackage(object):
         return [self.source, self.source_js, self.source_less]
 
     @property
+    def django_models(self):
+        if self.django_models_dir.exists():
+            return self.django_models_dir
+        if self.django_models_py.exists:
+            return self.django_models_py
+        return None
+
+    @property
     def django_dirs(self):
         """Directories containing/holding django specific files.
         """
-        return [self.django_static, self.django_templates]
+        return [self.django_static, self.django_templates, self.django_models]
 
     @property
     def build_dirs(self):
@@ -215,6 +232,9 @@ class Package(DefaultPackage):
         if name: self.name = name
         if docs: self.docs = docs
         if tests: self.tests = tests
+        self.source_js = self.root / 'js'
+        print(234, self.source_js)
+        self.source_less = self.root / 'less'
         if build:
             self.build = build
             self.build_coverage = self.build / 'coverage'
@@ -224,8 +244,6 @@ class Package(DefaultPackage):
             self.build_pytest = self.build / 'pytest'
         if source:
             self.source = source
-            self.source_js = self.source / 'js'
-            self.source_less = self.source / 'less'
             self.django_templates = self.source / 'templates'
             self.django_static = self.source / 'static'
         if source_js: self.source_js = source_js
@@ -237,3 +255,4 @@ class Package(DefaultPackage):
         if build_pytest: self.build_pytest = build_pytest
         if django_templates: self.django_templates = django_templates
         if django_static: self.django_static = django_static
+        print(235, self.source_js)

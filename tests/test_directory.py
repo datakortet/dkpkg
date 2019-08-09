@@ -25,26 +25,40 @@ def test_package_repr():
         print('root', r)
         p = Package('mypkg')
         print('repr:\n', repr(p))
-        assert cmptxt(repr(p)) == cmptxt(r"""
-                       build {root}\mypkg\build
-              build_coverage {root}\mypkg\build\coverage
-                  build_docs {root}\mypkg\build\docs
-             build_lintscore {root}\mypkg\build\lintscore
-                  build_meta {root}\mypkg\build\meta
-                build_pytest {root}\mypkg\build\pytest
-               django_static {root}\mypkg\mypkg\static
-            django_templates {root}\mypkg\mypkg\templates
-                        docs {root}\mypkg\docs
-                    location {root}
-                        name mypkg
-                package_name mypkg
-                        root {root}\mypkg
-                      source {root}\mypkg\mypkg
-                   source_js {root}\mypkg\mypkg\js
-                 source_less {root}\mypkg\mypkg\less
-                       tests {root}\mypkg\tests
-                    tests_js {root}\mypkg\tests\js
-        """.format(root=r))
+        correct = r"""
+                               build {root}\mypkg\build
+                      build_coverage {root}\mypkg\build\coverage
+                          build_docs {root}\mypkg\build\docs
+                     build_lintscore {root}\mypkg\build\lintscore
+                          build_meta {root}\mypkg\build\meta
+                        build_pytest {root}\mypkg\build\pytest
+                   django_models_dir {root}\mypkg\mypkg\models
+                    django_models_py {root}\mypkg\mypkg\models.py
+                       django_static {root}\mypkg\mypkg\static
+                    django_templates {root}\mypkg\mypkg\templates
+                                docs {root}\mypkg\docs
+                            location {root}
+                                name mypkg
+                        package_name mypkg
+                                root {root}\mypkg
+                              source {root}\mypkg\mypkg
+                           source_js {root}\mypkg\js
+                         source_less {root}\mypkg\less
+                               tests {root}\mypkg\tests
+                            tests_js {root}\mypkg\tests\js
+                """.format(root=r)
+        print("CORRECT:\n", correct)
+        a = cmptxt(repr(p))
+        b = cmptxt(correct)
+        # print("A:", a[1050:1400])
+        # print("B:", b[1050:1400])
+        # assert a[:1100] == b[:1100]
+        # assert a[:1150] == b[:1150]
+        # assert a[:1200] == b[:1200]
+        # assert a[:1600] == b[:1600]
+        # print("LEN:A", len(a), len(b))
+        # assert a == b
+        assert cmptxt(repr(p)) == cmptxt(correct)
 
 
 def test_write_ini():
@@ -63,8 +77,8 @@ def test_write_ini():
             docs = {root}\mypkg\docs
             tests = {root}\mypkg\tests
             source = {root}\mypkg\mypkg
-            source_js = {root}\mypkg\mypkg\js
-            source_less = {root}\mypkg\mypkg\less
+            source_js = {root}\mypkg\js
+            source_less = {root}\mypkg\less
             build = {root}\mypkg\build
             build_coverage = {root}\mypkg\build\coverage
             build_docs = {root}\mypkg\build\docs
@@ -89,8 +103,8 @@ def test_package_override():
         assert p.docs == r / 'mypkg/docs'
         assert p.name == 'mypkg'
         assert p.source == r / 'mypkg/src'
-        assert p.source_js == r / 'mypkg/src/js'
-        assert p.source_less == r / 'mypkg/src/less'
+        assert p.source_js == r / 'mypkg/js'
+        assert p.source_less == r / 'mypkg/less'
         assert p.django_templates == r / 'mypkg/src/templates'
         assert p.django_static == r / 'mypkg/src/static'
         assert p.build == r / 'build'
@@ -131,8 +145,8 @@ def test_package_override_name():
         assert p.docs == r / 'my-pkg/docs'
         assert p.name == 'foo'
         assert p.source == r / 'my-pkg/foo'
-        assert p.source_js == r / 'my-pkg/foo/js'
-        assert p.source_less == r / 'my-pkg/foo/less'
+        assert p.source_js == r / 'my-pkg/js'
+        assert p.source_less == r / 'my-pkg/less'
         assert p.django_templates == r / 'my-pkg/foo/templates'
         assert p.django_static == r / 'my-pkg/foo/static'
         assert p.build == r / 'my-pkg/build'
@@ -160,7 +174,6 @@ def test_package_override_name():
         assert p.is_django()
 
 
-
 def test_package_default():
     files = """
         mypkg: []
@@ -174,8 +187,8 @@ def test_package_default():
         assert p.docs == r / 'mypkg/docs'
         assert p.name == 'mypkg'
         assert p.source == r / 'mypkg/mypkg'
-        assert p.source_js == r / 'mypkg/mypkg/js'
-        assert p.source_less == r / 'mypkg/mypkg/less'
+        assert p.source_js == r / 'mypkg/js'
+        assert p.source_less == r / 'mypkg/less'
         assert p.django_templates == r / 'mypkg/mypkg/templates'
         assert p.django_static == r / 'mypkg/mypkg/static'
         assert p.build == r / 'mypkg/build'

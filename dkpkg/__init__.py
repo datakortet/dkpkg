@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-The dkpkg module provides a common naming scheme for the parts of a Python
-package.
+A common naming scheme for the parts of a Python package.
 """
 from .directory import Package
+
+__version__ = '2.0.0'
