@@ -233,7 +233,7 @@ class Package(DefaultPackage):
         if docs: self.docs = docs
         if tests: self.tests = tests
         self.source_js = self.root / 'js'
-        print(234, self.source_js)
+
         self.source_less = self.root / 'less'
         if build:
             self.build = build
@@ -255,4 +255,3 @@ class Package(DefaultPackage):
         if build_pytest: self.build_pytest = build_pytest
         if django_templates: self.django_templates = django_templates
         if django_static: self.django_static = django_static
-        print(235, self.source_js)
