@@ -10,3 +10,4 @@ dk-tasklib>=0.3.0
 yamldirs>=1.0.9
 
 pytest-cov
+
