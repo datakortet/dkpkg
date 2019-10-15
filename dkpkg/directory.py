@@ -110,6 +110,8 @@ class DefaultPackage(object):
         self.build_meta = kw.get('build_meta') or self.root / 'build' / 'meta'
         #: Pytest output directory.
         self.build_pytest = kw.get('build_pytest') or self.root / 'build' / 'pytest'
+        #: Gitlab public directory.
+        self.public_dir = kw.get('public_dir') or self.root / 'public'
 
         for k, v in kw.items():
             setattr(self, k, v)
@@ -255,3 +257,19 @@ class Package(DefaultPackage):
         if build_pytest: self.build_pytest = build_pytest
         if django_templates: self.django_templates = django_templates
         if django_static: self.django_static = django_static
+
+        # dkcode.Package compatibility
+        self.build_dir = self.build
+        self.lintscore_dir = self.build_lintscore
+        self.meta_dir = self.build_meta
+        self.coverage = self.build_coverage
+        self.coverage_dir = self.build_coverage
+        self.docs_dir = self.docs
+        self.package_dir = self.root
+        self.tests_dir = self.tests
+        self.pyroot_dir = self.root
+        self.source_dir = self.source
+        self.public = self.public_dir
+        self.pytest_dir = self.build_pytest
+        self.static_dir = self.django_static
+        self.templates_dir = self.django_templates
