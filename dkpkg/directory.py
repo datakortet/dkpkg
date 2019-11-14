@@ -223,6 +223,7 @@ class Package(DefaultPackage):
         source = kw.get('source')
         source_js = kw.get('source_js')
         source_less = kw.get('source_less')
+        source_styles = kw.get('styles')
         build_coverage = kw.get('build_coverage')
         build_docs = kw.get('build_docs')
         build_lintscore = kw.get('build_lintscore')
@@ -249,7 +250,8 @@ class Package(DefaultPackage):
             self.django_templates = self.source / 'templates'
             self.django_static = self.source / 'static'
         if source_js: self.source_js = source_js
-        if source_less: self.source_less = source_less
+        if source_less: self.source_styles = source_less
+        if source_styles: self.source_styles = source_styles
         if build_coverage: self.build_coverage = build_coverage
         if build_docs: self.build_docs = build_docs
         if build_lintscore: self.build_lintscore = build_lintscore
