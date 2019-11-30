@@ -4,7 +4,7 @@ Programatic interface to package structure.
 
 Use the :class:`Package` class.
 """
-# pylint: disable=too-many-instance-attributes,too-many-locals,R0903
+# pylint: disable=too-many-instance-attributes,too-many-locals,R0903,line-too-long
 from __future__ import print_function
 try:
     import ConfigParser as configparser
@@ -24,23 +24,23 @@ class DefaultPackage(object):
 
       ::
 
-          <parent>                      # self.location (abspath)
-             |--<name>                  # self.root (abspath), self.package_name
-                  |-- <name>            # <name> == self.name, self.source
-                  |   |-- static        # self.django_static
-                  |   `-- templates     # self.django_templates
-                  |-- js                # self.source_js
-                  |-- less              # self.source_less
-                  |-- docs              # self.docs
-                  +-- tests             # self.tests
-                  |-- build             # self.build
-                  |   |-- coverage      # self.build_coverage
-                  |   |-- docs          # self.build_docs
-                  |   |-- lintscore     # self.build_lintscore
-                  |   |-- meta          # self.build_meta
-                  |   `-- pytest        # self.build_pytest
-                  +-- setup.py          #
-                  `-- requirements.txt  #
+          <parent>                    # self.location (abspath)
+             |--<name>                # self.root (abspath), self.package_name
+                |-- <name>            # <name> == self.name, self.source
+                |   |-- static        # self.django_static
+                |   `-- templates     # self.django_templates
+                |-- js                # self.source_js
+                |-- less              # self.source_less
+                |-- docs              # self.docs
+                +-- tests             # self.tests
+                |-- build             # self.build
+                |   |-- coverage      # self.build_coverage
+                |   |-- docs          # self.build_docs
+                |   |-- lintscore     # self.build_lintscore
+                |   |-- meta          # self.build_meta
+                |   `-- pytest        # self.build_pytest
+                +-- setup.py          #
+                `-- requirements.txt  #
 
     """
     #: A set of all overridable keys
@@ -69,7 +69,7 @@ class DefaultPackage(object):
         #: The abspath to the "working copy".
         self.root = kw.get('root') or Path(root).abspath()
         #: The abspath of the directory containing the root.
-        self.location = kw.get('location') or self.root.parent     # pylint: disable=no-member
+        self.location = kw.get('location') or self.root.parent  # pylint: disable=no-member
         #: The pip-installable name.
         self.package_name = kw.get('package_name') or self.root.basename()
         #: The importable name.
@@ -117,7 +117,9 @@ class DefaultPackage(object):
             setattr(self, k, v)
 
     def is_django(self):
-        return any(d.exists() for d in self.django_dirs)
+        """Is this a Django package?
+        """
+        return any(d is not None and d.exists() for d in self.django_dirs)
 
     @property
     def source_dirs(self):
@@ -127,9 +129,11 @@ class DefaultPackage(object):
 
     @property
     def django_models(self):
+        """Return the path to the Django models.
+        """
         if self.django_models_dir.exists():
             return self.django_models_dir
-        if self.django_models_py.exists:
+        if self.django_models_py.exists():
             return self.django_models_py
         return None
 
@@ -158,7 +162,7 @@ class DefaultPackage(object):
     def missing_dirs(self):
         """Return all missing directories.
         """
-        return [d for d in self.all_dirs if not d.exists()]
+        return [d for d in self.all_dirs if d is not None and not d.exists()]
 
     def make_missing(self):
         """Create all missing directories.
@@ -174,7 +178,7 @@ class DefaultPackage(object):
             lines.append("%*s %-s" % (keylen, k, v))
         return '\n'.join(lines)
 
-    def write_ini(self, fname, section):
+    def write_ini(self, _fname, section):
         """Write to ini file.
         """
         cp = configparser.RawConfigParser()
@@ -196,23 +200,22 @@ class DefaultPackage(object):
 class Package(DefaultPackage):
     """Package layout with possible overrides.
     """
-    
-    def __init__(self, root,
-                 # name=None,
-                 # docs=None,
-                 # tests=None,
-                 # build=None,
-                 # source=None,
-                 # source_js=None,
-                 # source_less=None,
-                 # build_coverage=None,
-                 # build_docs=None,
-                 # build_lintscore=None,
-                 # build_meta=None,
-                 # build_pytest=None,
-                 # django_templates=None,
-                 # django_static=None,
-                 **kw):
+
+    def __init__(self, root, **kw):
+        # name=None,
+        # docs=None,
+        # tests=None,
+        # build=None,
+        # source=None,
+        # source_js=None,
+        # source_less=None,
+        # build_coverage=None,
+        # build_docs=None,
+        # build_lintscore=None,
+        # build_meta=None,
+        # build_pytest=None,
+        # django_templates=None,
+        # django_static=None,
         # pylint: disable=multiple-statements,too-many-arguments,R0912
         super(Package, self).__init__(root, **kw)
 

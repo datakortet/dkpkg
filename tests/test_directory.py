@@ -16,6 +16,49 @@ def test_extra_args():
     assert p.version == 42
 
 
+def test_is_django():
+    files = """
+        mypkg:
+            mypkg:
+                - models.py: ""
+    """
+    with create_files(files) as r:
+        r = Path(r)
+        print('root', r)
+        p = Package('mypkg')
+        assert p.is_django()
+        assert p.django_models.endswith('.py')
+
+
+def test_is_django_models_dir():
+    files = """
+        mypkg:
+            mypkg:
+                models:
+                    - __init__.py: ""
+    """
+    with create_files(files) as r:
+        r = Path(r)
+        print('root', r)
+        p = Package('mypkg')
+        assert p.is_django()
+        assert not p.django_models.endswith('.py')
+
+
+def test_is_not_django():
+    files = """
+        mypkg:
+            mypkg: []
+                
+    """
+    with create_files(files) as r:
+        r = Path(r)
+        print('root', r)
+        p = Package('mypkg')
+        assert not p.is_django()
+        assert p.django_models is None
+
+
 def test_package_repr():
     files = """
         mypkg: []
