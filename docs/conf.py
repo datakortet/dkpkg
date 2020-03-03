@@ -231,7 +231,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'dkpkg', u'dkpkg Documentation',
-   u'', 'dkpkg', 'One line description of project.',
+   u'', 'dkpkg', 'standardized package structure names',
    'Miscellaneous'),
 ]
 
