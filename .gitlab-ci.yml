@@ -3,22 +3,22 @@ include:
   - project: 'norsktest/dktools'
     file: '/ci-templates/dkbuild.yml'
 
-py27dj18:
+py27:
   extends: .testpackage
   script:
-    - dk testpackage --ci --tag=py27-dj18 --django=1.8.19
+    - dk testpackage --ci --tag=py27
 
-py35dj18:
+py35:
   extends: .testpackage
   image: thebjorn/dktestpackage3:latest
   after_script: []      
   script:
-    - dk testpackage --ci --tag=py35-dj18 --django=1.8.19
+    - dk testpackage --ci --tag=py35
 
 coverage:
   dependencies:
-    - py27dj18
+    - py27
 
 wheel:
   dependencies:
-    - py27dj18
+    - py27
