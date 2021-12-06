@@ -1,0 +1,12 @@
+build: []
+
+tests:
+  invoke: 1.2.0
+  PyYAML: 5.1.2
+
+local:
+  - dkfileutils
+  - yamldirs
+
+tasks:
+  - dk-tasklib
