@@ -7,25 +7,25 @@ env:
   HOME_REPO: datakortet/dkpkg
 
 jobs:
-  ci-lint:
-    name: CI:Lint
-    runs-on: ubuntu-latest
-    env:
-      LINTDIR: ./ghlint
-    steps:
-      # setup environment
-      - uses: actions/checkout@v2
-      - name: setup directories
-        shell: bash
-        run: |
-          mkdir -p $PIP_CACHE_DIR
-          mkdir -p $LINTDIR
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
+  # ci-lint:
+  #   name: CI:Lint
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     LINTDIR: ./ghlint
+  #   steps:
+  #     # setup environment
+  #     - uses: actions/checkout@v2
+  #     - name: setup directories
+  #       shell: bash
+  #       run: |
+  #         mkdir -p $PIP_CACHE_DIR
+  #         mkdir -p $LINTDIR
+  #     - uses: actions/setup-python@v2
+  #       with:
+  #         python-version: '3.9'
 
-      - run: pip install flake8
-      - run: flake8 dkpkg/** --max-line-length=199
+  #     - run: pip install flake8
+  #     - run: flake8 dkpkg/** --max-line-length=199
 
   ci-test:
     name: CI:Test
