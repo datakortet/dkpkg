@@ -11,6 +11,6 @@ py36:
     - python -V
     - pip -V
     - pip install pytest coverage
-  run:
+  script:
     - pytest --cov=dkpkg tests
   
