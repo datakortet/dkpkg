@@ -1,5 +1,6 @@
 invoke==1.2.0
-PyYAML==5.1.2
+PyYAML==5.1.2               ; python_version <= '3.5'
+PyYAML==5.3.1               ; python_version >= '3.6'
 dkfileutils==1.4.3             # WARNING[dkt]: dkfileutils==1.4.3 version mismatch! Should be MISSING (requirements-external.txt)
 dk-tasklib==3.0.3              # WARNING[dkt]: dk-tasklib==3.0.3 version mismatch! Should be MISSING (requirements-external.txt)
 yamldirs==1.1.8                # WARNING[dkt]: yamldirs==1.1.8 version mismatch! Should be MISSING (requirements-external.txt)
