@@ -2,16 +2,3 @@
 include:
   - project: 'norsktest/dktools'
     file: '/ci-templates/dkbuild.yml'
-
-
-py36:
-  image: python:3.6
-  stage: test
-  before_script:
-    - python -V
-    - pip -V
-    - pip install pytest coverage
-    - pip install -r requirements.txt
-  script:
-    - pytest --cov=dkpkg tests
-  
