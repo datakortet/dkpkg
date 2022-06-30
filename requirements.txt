@@ -1,5 +1,5 @@
 invoke==1.6.0
-PyYAML==5.3.1
+PyYAML==5.4
 dkfileutils==1.4.5
 dk-tasklib==3.0.5
 yamldirs==1.1.16
