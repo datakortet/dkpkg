@@ -167,7 +167,7 @@ class DefaultPackage:
         keylen = max(len(k) for k in self.__dict__)  # pylint:disable=unused-variable
         lines = []
         for k, v in sorted(self.__dict__.items()):
-            lines.append(f'{k:>keylen} {v}')
+            lines.append(f'{k:>{keylen}} {v}')
         return '\n'.join(lines)
 
     def write_ini(self, _fname, section):
@@ -193,7 +193,7 @@ class Package(DefaultPackage):
     """Package layout with possible overrides.
     """
 
-    def __init__(self, root, **kw):  
+    def __init__(self, root, **kw):
         # pylint:disable=multiple-statements,too-many-statements,too-many-branches
         super().__init__(root, **kw)
 

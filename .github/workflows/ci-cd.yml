@@ -7,37 +7,57 @@ env:
   HOME_REPO: datakortet/dkpkg
 
 jobs:
-  # ci-lint:
-  #   name: CI:Lint
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     LINTDIR: ./ghlint
-  #   steps:
-  #     # setup environment
-  #     - uses: actions/checkout@v2
-  #     - name: setup directories
-  #       shell: bash
-  #       run: |
-  #         mkdir -p $PIP_CACHE_DIR
-  #         mkdir -p $LINTDIR
-  #     - uses: actions/setup-python@v2
-  #       with:
-  #         python-version: '3.9'
+  ci-lint:
+    name: CI:Lint
+    runs-on: ubuntu-latest
+    env:
+      LINTDIR: ./ghlint
+    steps:
+      # setup environment
+      - uses: actions/checkout@v3
+      - name: setup directories
+        shell: bash
+        run: |
+          mkdir -p $PIP_CACHE_DIR
+          mkdir -p $LINTDIR
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
 
-  #     - run: pip install flake8
-  #     - run: flake8 dkpkg/** --max-line-length=199
+      - run: pip install flake8
+      - run: flake8 dkpkg/** --max-line-length=199 --extend-ignore=E701
+
+  docs:
+    name: CI:Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: setup directories
+        shell: bash
+        run: |
+          mkdir -p build
+      - run: pip install sphinx
+      - run: pip install -e .
+      - run: sphinx-build -W -b html docs build/sphinx/html
+      - run: sphinx-build -W -n -T -b man docs build/sphinx/man
+
+      - name: Upload docs as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Docs
+          path: build/sphinx/          
 
   ci-test:
     name: CI:Test
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-
-        # 2.7, 3.5-9  (current matrix)
-        python-version: [ '3.5', '3.6', '3.7', '3.8', '3.9']
       
-        # 2.7, 3.6-10 (next matrix)
-        # python-version: [ '2.7', '3.6', '3.7', '3.8', '3.9', '3.10' ]
+        # 3.7-11 (next matrix)
+        python-version: [ '3.7', '3.8', '3.9', '3.10', '3.11' ]
 
         # for debugging
         # python-version: [ '3.9' ]
@@ -51,11 +71,11 @@ jobs:
 
     steps:
       # setup environment
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: setup global directories
         shell: bash
         run: mkdir -p $PIP_CACHE_DIR
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -64,7 +84,7 @@ jobs:
       - run: pytest -vv --cov=dkpkg tests
 
       - name: Upload coverage to codecov.io
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN}}
           fail_ci_if_error: false
@@ -75,11 +95,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # setup environment
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: setup directories
         shell: bash
         run: mkdir -p $PIP_CACHE_DIR
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
@@ -93,19 +113,10 @@ jobs:
       - run: python setup.py sdist bdist_wheel
 
       - name: Upload packages as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Packages
           path: dist/
-
-      # - name: Build docs
-      #   run: python setup.py build_sphinx
-
-      # - name: Upload docs as artifact
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: Docs
-      #     path: build/sphinx/html/          
 
       - name: Deploy to PyPI
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.repository == env.HOME_REPO

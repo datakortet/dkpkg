@@ -2,21 +2,36 @@
 
 dkpkg - standardized package structure names
 ============================================
+..
+  This is a PyPI published package, don't point to private resources!
 
-.. image:: https://travis-ci.org/datakortet/dkpkg.svg?branch=master
-    :target: https://travis-ci.org/datakortet/dkpkg
-.. image:: https://coveralls.io/repos/github/datakortet/dkpkg/badge.svg?branch=master
-    :target: https://coveralls.io/github/datakortet/dkpkg?branch=master
 .. image:: https://codecov.io/gh/datakortet/dkpkg/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/datakortet/dkpkg
 
-.. image:: https://gitlab.com/norsktest/dkpkg/badges/master/pipeline.svg
-   :target: https://gitlab.com/norsktest/dkpkg/commits/master
-   :alt: pipeline status
+.. image:: https://github.com/datakortet/dkpkg/actions/workflows/ci-cd.yml/badge.svg
+   :target: https://github.com/datakortet/dkpkg/actions/workflows/ci-cd.yml
 
-.. image:: https://img.shields.io/badge/docs-darkgreen.svg
-   :target: https://norsktest.gitlab.io/dkpkg
-   :alt: documentation
+.. image:: https://readthedocs.org/projects/dkpkg/badge/?version=latest
+    :target: https://dkpkg.readthedocs.io/en/latest/?badge=latest
+    :alt: documentation
 
-.. include:: badge-wheel.rst
+.. image:: https://img.shields.io/github/license/datakortet/dkpkg
+   :alt: GitHub
 
+.. image:: https://img.shields.io/pypi/wheel/dkpkg
+   :alt: PyPI - Wheel
+
+.. image:: https://img.shields.io/pypi/pyversions/dkpkg
+   :alt: PyPI - Python Version
+
+.. image:: https://img.shields.io/pypi/v/dkpkg
+   :alt: PyPI
+
+.. image:: https://img.shields.io/pypi/dm/dkpkg
+   :alt: PyPI - Downloads
+
+.. image:: https://img.shields.io/pypi/format/dkpkg
+   :alt: PyPI - Format
+
+.. image:: https://img.shields.io/pypi/status/dkpkg
+   :alt: PyPI - Status
