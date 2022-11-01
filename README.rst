@@ -15,9 +15,6 @@ dkpkg - standardized package structure names
     :target: https://dkpkg.readthedocs.io/en/latest/?badge=latest
     :alt: documentation
 
-.. image:: https://img.shields.io/github/license/datakortet/dkpkg
-   :alt: GitHub
-
 .. image:: https://img.shields.io/pypi/wheel/dkpkg
    :alt: PyPI - Wheel
 
