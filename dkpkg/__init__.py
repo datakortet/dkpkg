@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 A common naming scheme for the parts of a Python package.
 """

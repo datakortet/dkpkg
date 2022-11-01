@@ -1,22 +1,15 @@
-# -*- coding: utf-8 -*-
 """
 Programatic interface to package structure.
 
 Use the :class:`Package` class.
 """
 # pylint: disable=too-many-instance-attributes,too-many-locals,R0903,line-too-long
-from __future__ import print_function
-try:
-    import ConfigParser as configparser
-    from cStringIO import StringIO
-except ImportError:  # pragma: nocover
-    import configparser
-    from io import StringIO
-
+import configparser
+from io import StringIO
 from dkfileutils.path import Path
 
 
-class DefaultPackage(object):
+class DefaultPackage:
     """Default package directory layout (consider this abstract, both in the
        sense that this class is abstract and in the sense that this is the
        attribute names of this object, not neccessarily the actual directory
@@ -65,7 +58,7 @@ class DefaultPackage(object):
         'build_pytest',
     }
 
-    def __init__(self, root, **kw):
+    def __init__(self, root, **kw):  # pylint:disable=too-many-statements
         #: The abspath to the "working copy".
         self.root = kw.get('root') or Path(root).abspath()
         #: The abspath of the directory containing the root.
@@ -171,11 +164,10 @@ class DefaultPackage(object):
             d.makedirs()
 
     def __repr__(self):
-        keylen = max(len(k) for k in self.__dict__.keys())
-        # vallen = max(len(k) for k in self.__dict__.values())
+        keylen = max(len(k) for k in self.__dict__)  # pylint:disable=unused-variable
         lines = []
         for k, v in sorted(self.__dict__.items()):
-            lines.append("%*s %-s" % (keylen, k, v))
+            lines.append(f'{k:>keylen} {v}')
         return '\n'.join(lines)
 
     def write_ini(self, _fname, section):
@@ -201,23 +193,9 @@ class Package(DefaultPackage):
     """Package layout with possible overrides.
     """
 
-    def __init__(self, root, **kw):
-        # name=None,
-        # docs=None,
-        # tests=None,
-        # build=None,
-        # source=None,
-        # source_js=None,
-        # source_less=None,
-        # build_coverage=None,
-        # build_docs=None,
-        # build_lintscore=None,
-        # build_meta=None,
-        # build_pytest=None,
-        # django_templates=None,
-        # django_static=None,
-        # pylint: disable=multiple-statements,too-many-arguments,R0912
-        super(Package, self).__init__(root, **kw)
+    def __init__(self, root, **kw):  
+        # pylint:disable=multiple-statements,too-many-statements,too-many-branches
+        super().__init__(root, **kw)
 
         name = kw.get('name')
         docs = kw.get('docs')
