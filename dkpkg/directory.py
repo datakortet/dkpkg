@@ -48,6 +48,7 @@ class DefaultPackage:
         'source',
         'source_js',
         'source_less',
+        'source_styles',
         'django_templates',
         'django_static',
         'django_models',
@@ -76,22 +77,24 @@ class DefaultPackage:
         #: The root of the build output directory.
         self.build = kw.get('build') or self.root / 'build'
         #: The source directory.
-        self.source = kw.get('source') or self.root / self.name
+        self.source = kw.get('source') or self.root / self.package_name
 
         #: The javascript source directory.
         self.source_js = kw.get('source_js') or self.root / 'js'
         #: The less source directory.
         self.source_less = kw.get('source_less') or self.root / 'less'
+        #: The scss source directory.
+        self.source_styles = kw.get('source_scss') or self.root / 'styles'
 
         #: The django app template directory.
-        self.django_templates = kw.get('django_templates') or self.root / self.name / 'templates'
+        self.django_templates = kw.get('django_templates') or self.root / self.package_name / 'templates'
         #: The django app static directory.
-        self.django_static = kw.get('django_static') or self.root / self.name / 'static'
+        self.django_static = kw.get('django_static') or self.root / self.package_name / 'static'
 
         #: The django models directory
-        self.django_models_dir = kw.get('django_models') or self.root / self.name / 'models'
+        self.django_models_dir = kw.get('django_models') or self.root / self.package_name / 'models'
         #: the django models.py file
-        self.django_models_py = kw.get('django_models') or self.root / self.name / 'models.py'
+        self.django_models_py = kw.get('django_models') or self.root / self.package_name / 'models.py'
 
         #: Coverage output directory.
         self.build_coverage = kw.get('build_coverage') or self.root / 'build' / 'coverage'
@@ -163,10 +166,23 @@ class DefaultPackage:
         for d in self.missing_dirs():
             d.makedirs()
 
-    def __repr__(self):
-        keylen = max(len(k) for k in self.__dict__)  # pylint:disable=unused-variable
+    def __str__(self):
+        keylen = max(len(k) for k in self.__dict__ if not k.startswith('_'))
         lines = []
         for k, v in sorted(self.__dict__.items()):
+            if k.startswith('_'):
+                continue
+            if isinstance(v, Path):
+                v = v.relpath(self.root)
+            lines.append(f'{k:>{keylen}} {v}')
+        return '\n'.join(lines)
+
+    def __repr__(self):
+        keylen = max(len(k) for k in self.__dict__ if not k.startswith('_'))
+        lines = []
+        for k, v in sorted(self.__dict__.items()):
+            if k.startswith('_'):
+                continue
             lines.append(f'{k:>{keylen}} {v}')
         return '\n'.join(lines)
 
@@ -241,18 +257,116 @@ class Package(DefaultPackage):
         if django_templates: self.django_templates = django_templates
         if django_static: self.django_static = django_static
 
-        # dkcode.Package compatibility
-        self.build_dir = self.build
-        self.lintscore_dir = self.build_lintscore
-        self.meta_dir = self.build_meta
-        self.coverage = self.build_coverage
-        self.coverage_dir = self.build_coverage
-        self.docs_dir = self.docs
-        self.package_dir = self.root
-        self.tests_dir = self.tests
-        self.pyroot_dir = self.root
-        self.source_dir = self.source
-        self.public = self.public_dir
-        self.pytest_dir = self.build_pytest
-        self.static_dir = self.django_static
-        self.templates_dir = self.django_templates
+    # dkcode.Package compatibility
+    @property
+    def build_dir(self):
+        return self.build
+
+    @build_dir.setter
+    def build_dir(self, val):
+        self.build = val
+
+    @property
+    def lintscore_dir(self):
+        return self.build_lintscore
+
+    @lintscore_dir.setter
+    def lintscore_dir(self, val):
+        self.build_lintscore = val
+
+    @property
+    def meta_dir(self):
+        return self.build_meta
+
+    @meta_dir.setter
+    def meta_dir(self, val):
+        self.build_meta = val
+
+    @property
+    def coverage(self):
+        return self.build_coverage
+
+    @coverage.setter
+    def coverage(self, val):
+        self.build_coverage = val
+
+    @property
+    def coverage_dir(self):
+        return self.build_coverage
+
+    @coverage_dir.setter
+    def coverage_dir(self, val):
+        self.build_coverage = val
+
+    @property
+    def docs_dir(self):
+        return self.docs
+
+    @docs_dir.setter
+    def docs_dir(self, val):
+        self.docs = val
+
+    @property
+    def package_dir(self):
+        return self.root
+
+    @package_dir.setter
+    def package_dir(self, val):
+        self.root = val
+
+    @property
+    def tests_dir(self):
+        return self.tests
+
+    @tests_dir.setter
+    def tests_dir(self, val):
+        self.tests = val
+
+    @property
+    def pyroot_dir(self):
+        return self.root
+
+    @pyroot_dir.setter
+    def pyroot_dir(self, val):
+        self.root = val
+
+    @property
+    def source_dir(self):
+        return self.source
+
+    @source_dir.setter
+    def source_dir(self, val):
+        self.source = val
+
+    @property
+    def public(self):
+        return self.public_dir
+
+    @public.setter
+    def public(self, val):
+        self.public_dir = val
+
+    @property
+    def pytest_dir(self):
+        return self.build_pytest
+
+
+    @pytest_dir.setter
+    def pytest_dir(self, val):
+        self.build_pytest = val
+
+    @property
+    def static_dir(self):
+        return self.django_static
+
+    @static_dir.setter
+    def static_dir(self, val):
+        self.django_static = val
+
+    @property
+    def templates_dir(self):
+        return self.django_templates
+
+    @templates_dir.setter
+    def templates_dir(self, val):
+        self.django_templates = val
