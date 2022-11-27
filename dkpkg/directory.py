@@ -256,6 +256,8 @@ class Package(DefaultPackage):
         if build_pytest: self.build_pytest = build_pytest
         if django_templates: self.django_templates = django_templates
         if django_static: self.django_static = django_static
+        if self.django_templates:
+            self.app_templates = self.django_templates / self.package_name
 
     # dkcode.Package compatibility
     @property
