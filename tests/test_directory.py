@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import print_function
 import textwrap
 
 from dkfileutils.path import Path
@@ -69,40 +67,28 @@ def test_package_repr():
         p = Package('mypkg')
         print('repr:\n', repr(p))
         correct = r"""
+                app_templates {root}\mypkg\mypkg\templates\mypkg
                         build {root}\mypkg\build
                build_coverage {root}\mypkg\build\coverage
-                    build_dir {root}\mypkg\build
                    build_docs {root}\mypkg\build\docs
               build_lintscore {root}\mypkg\build\lintscore
                    build_meta {root}\mypkg\build\meta
                  build_pytest {root}\mypkg\build\pytest
-                     coverage {root}\mypkg\build\coverage
-                 coverage_dir {root}\mypkg\build\coverage
             django_models_dir {root}\mypkg\mypkg\models
              django_models_py {root}\mypkg\mypkg\models.py
                 django_static {root}\mypkg\mypkg\static
              django_templates {root}\mypkg\mypkg\templates
                          docs {root}\mypkg\docs
-                     docs_dir {root}\mypkg\docs
-                lintscore_dir {root}\mypkg\build\lintscore
                      location {root}
-                     meta_dir {root}\mypkg\build\meta
                          name mypkg
-                  package_dir {root}\mypkg
                  package_name mypkg
-                       public {root}\mypkg\public
                    public_dir {root}\mypkg\public
-                   pyroot_dir {root}\mypkg
-                   pytest_dir {root}\mypkg\build\pytest
                          root {root}\mypkg
                        source {root}\mypkg\mypkg
-                   source_dir {root}\mypkg\mypkg
                     source_js {root}\mypkg\js
                   source_less {root}\mypkg\less
-                   static_dir {root}\mypkg\mypkg\static
-                templates_dir {root}\mypkg\mypkg\templates
+                source_styles {root}\mypkg\styles
                         tests {root}\mypkg\tests
-                    tests_dir {root}\mypkg\tests
                      tests_js {root}\mypkg\tests\js
                 """.format(root=r)
         print("CORRECT:\n", correct)
@@ -116,6 +102,10 @@ def test_package_repr():
         # assert a[:1600] == b[:1600]
         # print("LEN:A", len(a), len(b))
         # assert a == b
+        for aa, bb in zip(a.split(), b.split()):
+            if aa != bb:
+                print("A:", aa)
+                print("B:", bb)
         assert cmptxt(repr(p)) == cmptxt(correct)
 
 
@@ -194,26 +184,27 @@ def test_package_override_name():
     files = """
         my-pkg: []
     """
-    with create_files(files) as r:
-        r = Path(r)
-        print('root', r)
+    with create_files(files) as loc:
+        loc = Path(loc)
+        print('root', loc)
         p = Package('my-pkg', name='foo')
-        assert p.location == r
-        assert p.root == r / 'my-pkg'
-        assert p.docs == r / 'my-pkg/docs'
+        print(p)
+        assert p.location == loc
+        assert p.root == loc / 'my-pkg'
+        assert p.docs == loc / 'my-pkg/docs'
         assert p.name == 'foo'
-        assert p.source == r / 'my-pkg/foo'
-        assert p.source_js == r / 'my-pkg/js'
-        assert p.source_less == r / 'my-pkg/less'
-        assert p.django_templates == r / 'my-pkg/foo/templates'
-        assert p.django_static == r / 'my-pkg/foo/static'
-        assert p.build == r / 'my-pkg/build'
-        assert p.build_coverage == r / 'my-pkg/build/coverage'
-        assert p.build_docs == r / 'my-pkg/build/docs'
-        assert p.build_lintscore == r / 'my-pkg/build/lintscore'
-        assert p.build_meta == r / 'my-pkg/build/meta'
-        assert p.build_pytest == r / 'my-pkg/build/pytest'
-        assert p.tests == r / 'my-pkg/tests'
+        assert p.source == loc / 'my-pkg/foo'
+        assert p.source_js == loc / 'my-pkg/js'
+        assert p.source_less == loc / 'my-pkg/less'
+        assert p.django_templates == loc / 'my-pkg/foo/templates'
+        assert p.django_static == loc / 'my-pkg/foo/static'
+        assert p.build == loc / 'my-pkg/build'
+        assert p.build_coverage == loc / 'my-pkg/build/coverage'
+        assert p.build_docs == loc / 'my-pkg/build/docs'
+        assert p.build_lintscore == loc / 'my-pkg/build/lintscore'
+        assert p.build_meta == loc / 'my-pkg/build/meta'
+        assert p.build_pytest == loc / 'my-pkg/build/pytest'
+        assert p.tests == loc / 'my-pkg/tests'
 
         p.make_missing()
 

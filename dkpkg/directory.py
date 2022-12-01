@@ -87,14 +87,14 @@ class DefaultPackage:
         self.source_styles = kw.get('source_scss') or self.root / 'styles'
 
         #: The django app template directory.
-        self.django_templates = kw.get('django_templates') or self.root / self.package_name / 'templates'
+        self.django_templates = kw.get('django_templates') or self.root / self.name / 'templates'
         #: The django app static directory.
-        self.django_static = kw.get('django_static') or self.root / self.package_name / 'static'
+        self.django_static = kw.get('django_static') or self.root / self.name / 'static'
 
         #: The django models directory
-        self.django_models_dir = kw.get('django_models') or self.root / self.package_name / 'models'
+        self.django_models_dir = kw.get('django_models') or self.root / self.name / 'models'
         #: the django models.py file
-        self.django_models_py = kw.get('django_models') or self.root / self.package_name / 'models.py'
+        self.django_models_py = kw.get('django_models') or self.root / self.name / 'models.py'
 
         #: Coverage output directory.
         self.build_coverage = kw.get('build_coverage') or self.root / 'build' / 'coverage'
@@ -178,11 +178,12 @@ class DefaultPackage:
         return '\n'.join(lines)
 
     def __repr__(self):
-        keylen = max(len(k) for k in self.__dict__ if not k.startswith('_'))
+        keys = [k for k in self.__dict__ if not k.startswith('_')]
+        # keys += [p for p in dir(self.__class__) if isinstance(getattr(self.__class__, p), property)]
+        keylen = max(len(k) for k in keys)
         lines = []
-        for k, v in sorted(self.__dict__.items()):
-            if k.startswith('_'):
-                continue
+        for k in sorted(keys):
+            v = getattr(self, k)
             lines.append(f'{k:>{keylen}} {v}')
         return '\n'.join(lines)
 
@@ -214,6 +215,7 @@ class Package(DefaultPackage):
         super().__init__(root, **kw)
 
         name = kw.get('name')
+        package_name = kw.get('package_name', name)
         docs = kw.get('docs')
         tests = kw.get('tests')
         build = kw.get('build')
@@ -230,6 +232,7 @@ class Package(DefaultPackage):
         django_static = kw.get('django_static')
 
         if name: self.name = name
+        if package_name: self.package_name = package_name
         if docs: self.docs = docs
         if tests: self.tests = tests
         self.source_js = self.root / 'js'
@@ -257,7 +260,7 @@ class Package(DefaultPackage):
         if django_templates: self.django_templates = django_templates
         if django_static: self.django_static = django_static
         if self.django_templates:
-            self.app_templates = self.django_templates / self.package_name
+            self.app_templates = self.django_templates / self.name
 
     # dkcode.Package compatibility
     @property
