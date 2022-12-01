@@ -355,7 +355,6 @@ class Package(DefaultPackage):
     def pytest_dir(self):
         return self.build_pytest
 
-
     @pytest_dir.setter
     def pytest_dir(self, val):
         self.build_pytest = val
