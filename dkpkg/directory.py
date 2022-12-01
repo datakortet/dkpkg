@@ -77,7 +77,7 @@ class DefaultPackage:
         #: The root of the build output directory.
         self.build = kw.get('build') or self.root / 'build'
         #: The source directory.
-        self.source = kw.get('source') or self.root / self.package_name
+        self.source = kw.get('source') or self.root / self.name
 
         #: The javascript source directory.
         self.source_js = kw.get('source_js') or self.root / 'js'
