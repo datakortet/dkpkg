@@ -1,6 +1,7 @@
 invoke==2.0.0
-PyYAML==5.4.1
+PyYAML==6.0.1
 dkfileutils==1.4.5
 dk-tasklib==3.0.6
 yamldirs==1.1.16
 pytest-cov==2.12.1
+
