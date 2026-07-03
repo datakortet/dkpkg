@@ -87,23 +87,39 @@ class DefaultPackage:
         self.source_styles = kw.get('source_scss') or self.root / 'styles'
 
         #: The django app template directory.
-        self.django_templates = kw.get('django_templates') or self.root / self.name / 'templates'
+        self.django_templates = (
+            kw.get('django_templates') or self.root / self.name / 'templates'
+        )
         #: The django app static directory.
-        self.django_static = kw.get('django_static') or self.root / self.name / 'static'
+        self.django_static = (
+            kw.get('django_static') or self.root / self.name / 'static'
+        )
 
         #: The django models directory
-        self.django_models_dir = kw.get('django_models') or self.root / self.name / 'models'
+        self.django_models_dir = (
+            kw.get('django_models') or self.root / self.name / 'models'
+        )
         #: the django models.py file
-        self.django_models_py = kw.get('django_models') or self.root / self.name / 'models.py'
+        self.django_models_py = (
+            kw.get('django_models') or self.root / self.name / 'models.py'
+        )
 
         #: Coverage output directory.
-        self.build_coverage = kw.get('build_coverage') or self.root / 'build' / 'coverage'
+        self.build_coverage = (
+            kw.get('build_coverage') or self.root / 'build' / 'coverage'
+        )
         #: Documentation output directory.
-        self.build_docs = kw.get('build_docs') or self.root / 'build' / 'docs'
+        self.build_docs = (
+            kw.get('build_docs') or self.root / 'build' / 'docs'
+        )
         #: Lintscore output directory.
-        self.build_lintscore = kw.get('build_lintscore') or self.root / 'build' / 'lintscore'
+        self.build_lintscore = (
+            kw.get('build_lintscore') or self.root / 'build' / 'lintscore'
+        )
         #: Package meta output directory.
-        self.build_meta = kw.get('build_meta') or self.root / 'build' / 'meta'
+        self.build_meta = (
+            kw.get('build_meta') or self.root / 'build' / 'meta'
+        )
         #: Pytest output directory.
         self.build_pytest = kw.get('build_pytest') or self.root / 'build' / 'pytest'
         #: Gitlab public directory.
@@ -179,7 +195,8 @@ class DefaultPackage:
 
     def __repr__(self):
         keys = [k for k in self.__dict__ if not k.startswith('_')]
-        # keys += [p for p in dir(self.__class__) if isinstance(getattr(self.__class__, p), property)]
+        # keys += [p for p in dir(self.__class__)
+        #         if isinstance(getattr(self.__class__, p), property)]
         keylen = max(len(k) for k in keys)
         lines = []
         for k in sorted(keys):
@@ -231,10 +248,14 @@ class Package(DefaultPackage):
         django_templates = kw.get('django_templates')
         django_static = kw.get('django_static')
 
-        if name: self.name = name
-        if package_name: self.package_name = package_name
-        if docs: self.docs = docs
-        if tests: self.tests = tests
+        if name:
+            self.name = name
+        if package_name:
+            self.package_name = package_name
+        if docs:
+            self.docs = docs
+        if tests:
+            self.tests = tests
         self.source_js = self.root / 'js'
 
         self.source_less = self.root / 'less'
@@ -249,16 +270,26 @@ class Package(DefaultPackage):
             self.source = source
             self.django_templates = self.source / 'templates'
             self.django_static = self.source / 'static'
-        if source_js: self.source_js = source_js
-        if source_less: self.source_styles = source_less
-        if source_styles: self.source_styles = source_styles
-        if build_coverage: self.build_coverage = build_coverage
-        if build_docs: self.build_docs = build_docs
-        if build_lintscore: self.build_lintscore = build_lintscore
-        if build_meta: self.build_meta = build_meta
-        if build_pytest: self.build_pytest = build_pytest
-        if django_templates: self.django_templates = django_templates
-        if django_static: self.django_static = django_static
+        if source_js:
+            self.source_js = source_js
+        if source_less:
+            self.source_styles = source_less
+        if source_styles:
+            self.source_styles = source_styles
+        if build_coverage:
+            self.build_coverage = build_coverage
+        if build_docs:
+            self.build_docs = build_docs
+        if build_lintscore:
+            self.build_lintscore = build_lintscore
+        if build_meta:
+            self.build_meta = build_meta
+        if build_pytest:
+            self.build_pytest = build_pytest
+        if django_templates:
+            self.django_templates = django_templates
+        if django_static:
+            self.django_static = django_static
         if self.django_templates:
             self.app_templates = self.django_templates / self.name
 

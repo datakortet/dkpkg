@@ -1,5 +1,23 @@
 # -*- coding: utf-8 -*-
+# pragma: nocover
 from __future__ import print_function
+
+import os
+import warnings
+
+from dkfileutils.changed import changed
+from dkfileutils.path import Path
+from dktasklib.wintask import task
+from invoke import Collection
+
+from dktasklib import docs as doctools
+from dktasklib import jstools
+from dktasklib import lessc
+from dktasklib import version, upversion
+from dktasklib.manage import collectstatic
+from dktasklib import Package, package
+from dktasklib.watch import Watcher
+from dktasklib.publish import publish
 
 """
 Base version of package/tasks.py, created by
@@ -24,25 +42,7 @@ the lessc compiler is installed (and if not it will attempt to install it).
 This file is an initial skeleton, you are supposed to edit and add to it so it
 will fit your use case.
 
-
 """
-# pragma: nocover
-import os
-import warnings
-
-from dkfileutils.changed import changed
-from dkfileutils.path import Path
-from dktasklib.wintask import task
-from invoke import Collection
-
-from dktasklib import docs as doctools
-from dktasklib import jstools
-from dktasklib import lessc
-from dktasklib import version, upversion
-from dktasklib.manage import collectstatic
-from dktasklib import Package, package
-from dktasklib.watch import Watcher
-from dktasklib.publish import publish
 
 #: where tasks.py is located (root of package)
 DIRNAME = Path(os.path.dirname(__file__))

@@ -47,7 +47,7 @@ def test_is_not_django():
     files = """
         mypkg:
             mypkg: []
-                
+
     """
     with create_files(files) as r:
         r = Path(r)
@@ -134,7 +134,7 @@ def test_write_ini():
             build_meta = {root}\mypkg\build\meta
             build_pytest = {root}\mypkg\build\pytest
             django_templates = {root}\mypkg\mypkg\templates
-            django_static = {root}\mypkg\mypkg\static        
+            django_static = {root}\mypkg\mypkg\static
         """.format(root=r))
 
 
