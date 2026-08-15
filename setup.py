@@ -17,7 +17,7 @@ Programming Language :: Python :: 3
 Topic :: Software Development :: Libraries
 """
 
-version = '2.0.5'
+version = '2.0.6'
 
 
 setuptools.setup(
