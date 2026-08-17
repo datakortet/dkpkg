@@ -1,7 +1,13 @@
 
 .. include:: ../README.rst
 
-.. include:: modules.rst
+API reference
+=============
+
+.. toctree::
+   :maxdepth: 2
+
+   modules
 
 
 

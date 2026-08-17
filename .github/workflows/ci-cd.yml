@@ -14,15 +14,15 @@ jobs:
       LINTDIR: ./ghlint
     steps:
       # setup environment
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: setup directories
         shell: bash
         run: |
           mkdir -p $PIP_CACHE_DIR
           mkdir -p $LINTDIR
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v7
         with:
-          python-version: '3.9'
+          python-version: '3.13'
 
       - run: pip install flake8
       - run: flake8 dkpkg/** --max-line-length=199 --extend-ignore=E701
@@ -31,21 +31,21 @@ jobs:
     name: CI:Docs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: '3.9'
+          python-version: '3.13'
       - name: setup directories
         shell: bash
         run: |
           mkdir -p build
-      - run: pip install sphinx
+      - run: pip install "sphinx>=9.1,<10"
       - run: pip install -e .
       - run: sphinx-build -W -b html docs build/sphinx/html
       - run: sphinx-build -W -n -T -b man docs build/sphinx/man
 
       - name: Upload docs as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: Docs
           path: build/sphinx/          
@@ -56,8 +56,7 @@ jobs:
     strategy:
       matrix:
       
-        # 3.7-11 (next matrix)
-        python-version: [ '3.7', '3.8', '3.9', '3.10', '3.11' ]
+        python-version: [ '3.9', '3.10', '3.11', '3.12', '3.13' ]
 
         # for debugging
         # python-version: [ '3.9' ]
@@ -71,20 +70,21 @@ jobs:
 
     steps:
       # setup environment
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: setup global directories
         shell: bash
         run: mkdir -p $PIP_CACHE_DIR
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 
-      - run: pip install -r requirements.txt
+      - run: pip install pytest-cov
+      - run: pip install -e .
       - run: pip list
       - run: pytest -vv --cov=dkpkg tests
 
       - name: Upload coverage to codecov.io
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN}}
           fail_ci_if_error: false
@@ -95,13 +95,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # setup environment
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: setup directories
         shell: bash
         run: mkdir -p $PIP_CACHE_DIR
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v7
         with:
-          python-version: '3.9'
+          python-version: '3.13'
 
       - name: Cleanup
         run: |
@@ -109,11 +109,11 @@ jobs:
           rm -rf build
 
       - run: pip install -U wheel packaging twine
-      - run: pip install -r requirements.txt
+      - run: pip install -e .
       - run: python setup.py sdist bdist_wheel
 
       - name: Upload packages as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: Packages
           path: dist/
