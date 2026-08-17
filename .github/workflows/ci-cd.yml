@@ -78,7 +78,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - run: pip install pytest-cov
+      - run: pip install pytest-cov yamldirs
       - run: pip install -e .
       - run: pip list
       - run: pytest -vv --cov=dkpkg tests

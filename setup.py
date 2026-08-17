@@ -24,11 +24,7 @@ setuptools.setup(
     name='dkpkg',
     version=version,
     install_requires=[
-        'invoke',
-        'PyYAML',
         'dkfileutils',
-        'dk-tasklib',
-        'yamldirs',
     ],
     author='Bjorn Pettersen',
     author_email='bp@datakortet.no',
